@@ -18,6 +18,7 @@ use app\adminapi\lists\user\UserLists;
 use app\adminapi\logic\user\UserLogic;
 use app\adminapi\validate\user\AdjustUserMoney;
 use app\adminapi\validate\user\UserValidate;
+use think\facade\Db;
 
 /**
  * 用户控制器
@@ -50,6 +51,12 @@ class UserController extends BaseAdminController
         $params = (new UserValidate())->goCheck('detail');
         $detail = UserLogic::detail($params['id']);
         return $this->success('', $detail);
+    }
+
+    public function closeUser(){
+        Db::name('user')->where('id',input('id'))->update(['is_agent'=>0,'update_time'=>time()]);
+        Db::table('dl_admin')->where('user_id',input('id'))->delete();
+        return $this->success('关闭成功');
     }
 
 

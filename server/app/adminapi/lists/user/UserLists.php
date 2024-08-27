@@ -35,7 +35,7 @@ class UserLists extends BaseAdminDataLists implements ListsExcelInterface
      */
     public function setSearch(): array
     {
-        $allowSearch = ['keyword', 'channel', 'create_time_start', 'create_time_end'];
+        $allowSearch = ['keyword', 'channel', 'create_time_start', 'create_time_end','is_agent'];
         return array_intersect(array_keys($this->params), $allowSearch);
     }
 
@@ -54,12 +54,13 @@ class UserLists extends BaseAdminDataLists implements ListsExcelInterface
         $field = "id,sn,nickname,sex,avatar,account,mobile,channel,create_time";
         $lists = User::withSearch($this->setSearch(), $this->params)
             ->limit($this->limitOffset, $this->limitLength)
-            ->field($field)
             ->order('id desc')
             ->select()->toArray();
 
         foreach ($lists as &$item) {
             $item['channel'] = UserTerminalEnum::getTermInalDesc($item['channel']);
+            $item['login_time'] = $item['login_time']?date('Y-m-d H:i:s',$item['login_time']):'-';
+            $item['create_time'] = $item['create_time']?date('Y-m-d H:i:s',$item['create_time']):'-';
         }
 
         return $lists;

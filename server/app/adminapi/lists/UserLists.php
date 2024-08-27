@@ -38,7 +38,7 @@ class UserLists extends BaseAdminDataLists implements ListsSearchInterface
     public function setSearch(): array
     {
         return [
-            '=' => ['real_name', 'nickname', 'account', 'mobile'],
+            '=' => ['real_name', 'nickname', 'account', 'mobile','is_agent'],
         ];
     }
 

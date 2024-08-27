@@ -10,6 +10,11 @@ export function getUserDetail(params: any) {
     return request.get({ url: '/user.user/detail', params })
 }
 
+// 用户详情
+export function closeUser(params: any) {
+    return request.get({ url: '/user.user/closeUser', params })
+}
+
 // 用户编辑
 export function userEdit(params: any) {
     return request.post({ url: '/user.user/edit', params })
