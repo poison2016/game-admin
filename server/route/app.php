@@ -12,7 +12,7 @@ use think\facade\Console;
 use think\facade\Route;
 
 // 管理后台
-Route::rule('admin/:any', function () {
+Route::rule('/:any', function () {
     return view(app()->getRootPath() . 'public/admin/index.html');
 })->pattern(['any' => '\w+']);
 
