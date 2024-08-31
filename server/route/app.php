@@ -16,15 +16,7 @@ Route::rule('/:any', function () {
     return view(app()->getRootPath() . 'public/admin/index.html');
 })->pattern(['any' => '\w+']);
 
-// 手机端
-Route::rule('mobile/:any', function () {
-    return view(app()->getRootPath() . 'public/mobile/index.html');
-})->pattern(['any' => '\w+']);
 
-// PC端
-Route::rule('pc/:any', function () {
-    return view(app()->getRootPath() . 'public/pc/index.html');
-})->pattern(['any' => '\w+']);
 
 //定时任务
 Route::rule('crontab', function () {
