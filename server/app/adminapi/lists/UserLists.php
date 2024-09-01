@@ -85,7 +85,7 @@ class UserLists extends BaseAdminDataLists implements ListsSearchInterface
             $v['is_disable_str'] = $v['is_disable'] == 1?'是':'否';
             $v['is_new_user_str'] = $v['is_new_user'] == 1?'是':'否';
             $v['login_status_str'] = $v['login_status'] == 1?'是':'否';
-
+            $v['password']  = '';
         }
         return $data;
     }

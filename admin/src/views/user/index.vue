@@ -6,9 +6,7 @@
                 :model="queryParams"
                 inline
             >
-                <el-form-item label="真实姓名" prop="real_name">
-    <el-input class="w-[280px]" v-model="queryParams.real_name" clearable placeholder="请输入真实姓名" />
-</el-form-item>
+                
                 <el-form-item label="用户昵称" prop="nickname">
     <el-input class="w-[280px]" v-model="queryParams.nickname" clearable placeholder="请输入用户昵称" />
 </el-form-item>
@@ -36,7 +34,7 @@
             <div class="mt-4">
                 <el-table :data="pager.lists" @selection-change="handleSelectionChange">
                     <el-table-column type="selection" width="55" />
-                    <el-table-column label="编号" prop="sn" show-overflow-tooltip />
+                    <el-table-column label="邀请码" prop="sn" show-overflow-tooltip />
                     <el-table-column label="头像" prop="avatar">
     <template #default="{ row }">
         <el-image style="width:50px;height:50px;" :src="row.avatar" />
@@ -47,7 +45,6 @@
                     <el-table-column label="用户账号" prop="account" show-overflow-tooltip />
                     <el-table-column label="用户电话" prop="mobile" show-overflow-tooltip />
                     <el-table-column label="性别" prop="sex_str" show-overflow-tooltip />
-                    <el-table-column label="注册渠道" prop="channel_str" show-overflow-tooltip />
                     <el-table-column label="是否禁用" prop="is_disable_str" show-overflow-tooltip />
                     <el-table-column label="最后登录IP" prop="login_ip" show-overflow-tooltip />
                     <el-table-column label="最后登录时间" prop="login_time">
@@ -55,7 +52,6 @@
       <span>{{ row.login_time ? timeFormat(row.login_time, 'yyyy-mm-dd hh:MM:ss') : '' }}</span>
     </template>
 </el-table-column>
-                    <el-table-column label="是否是新注册用户:" prop="is_new_user_str" show-overflow-tooltip />
                     <el-table-column label="用户余额" prop="user_money" show-overflow-tooltip />
                     <el-table-column label="累计充值" prop="total_recharge_amount" show-overflow-tooltip />
                     <el-table-column label="创建时间" prop="create_time">
@@ -63,11 +59,7 @@
       <span>{{ row.create_time ? timeFormat(row.create_time, 'yyyy-mm-dd hh:MM:ss') : '' }}</span>
     </template>
 </el-table-column>
-                    <el-table-column label="删除时间" prop="delete_time">
-    <template #default="{ row }">
-      <span>{{ row.delete_time ? timeFormat(row.delete_time, 'yyyy-mm-dd hh:MM:ss') : '' }}</span>
-    </template>
-</el-table-column>
+                    
                     <el-table-column label="锁定余额" prop="frozen_balance" show-overflow-tooltip />
                     <el-table-column label="VIP等级" prop="level_id" show-overflow-tooltip />
                     <el-table-column label="登录状态" prop="login_status_str" show-overflow-tooltip />
@@ -80,8 +72,32 @@
                                 link
                                 @click="handleEdit(row)"
                             >
-                                编辑
+                                修改
                             </el-button>
+							<el-button
+							    v-perms="['user/edit']"
+							    type="primary"
+							    link
+							    @click="handlesEdit(row)"
+							>
+							    加/扣款
+							</el-button>
+							<el-button
+							    v-perms="['user/edit']"
+							    type="primary"
+							    link
+							    @click="handleEdit(row)"
+							>
+							    额度管理
+							</el-button>
+							<el-button
+							    v-perms="['user/edit']"
+							    type="primary"
+							    link
+							    @click="handleDeletes(row.id)"
+							>
+							    升级为代理
+							</el-button>
                             <el-button
                                 v-perms="['user/delete']"
                                 type="danger"
@@ -109,6 +125,8 @@ import { apiUserLists, apiUserDelete,apiUserZD } from '@/api/users'
 import { timeFormat } from '@/utils/util'
 import feedback from '@/utils/feedback'
 import EditPopup from './edit.vue'
+import JkkPopup from './jkk.vue'
+
 
 const editRef = shallowRef<InstanceType<typeof EditPopup>>()
 // 是否显示编辑框
@@ -151,6 +169,16 @@ const handleAdd = async () => {
 const handleEdit = async (data: any) => {
     showEdit.value = true
     await nextTick()
+	data.is_show = 1;
+    editRef.value?.open('edit')
+    editRef.value?.setFormData(data)
+}
+
+// 编辑
+const handlesEdit = async (data: any) => {
+    showEdit.value = true
+    await nextTick()
+	data.is_show =2;
     editRef.value?.open('edit')
     editRef.value?.setFormData(data)
 }
@@ -159,6 +187,12 @@ const handleEdit = async (data: any) => {
 const handleDelete = async (id: number | any[]) => {
     await feedback.confirm('确定要删除？')
     await apiUserDelete({ id })
+    getLists()
+}
+// 删除
+const handleDeletes = async (id: number | any[]) => {
+    await feedback.confirm('确定要升级为代理吗？')
+    await apiUserZD({ id:[id] })
     getLists()
 }
 

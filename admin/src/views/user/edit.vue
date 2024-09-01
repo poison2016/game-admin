@@ -9,58 +9,49 @@
             @close="handleClose"
         >
             <el-form ref="formRef" :model="formData" label-width="90px" :rules="formRules">
-                <el-form-item label="编号" prop="sn">
-    <el-input v-model="formData.sn" clearable placeholder="请输入编号" />
+                <el-form-item v-if="formData.is_show == 1" label="邀请码" prop="sn">
+    <el-input v-model="formData.sn" disabled clearable placeholder="请输入邀请码" />
 </el-form-item>
-                <el-form-item label="头像" prop="avatar">
-    <material-picker v-model="formData.avatar" />
+                <el-form-item v-if="formData.is_show == 1" label="头像" prop="avatar">
+    <material-picker disabled v-model="formData.avatar" />
 </el-form-item>
-                <el-form-item label="真实姓名" prop="real_name">
-    <el-input v-model="formData.real_name" clearable placeholder="请输入真实姓名" />
+                <el-form-item v-if="formData.is_show == 1" label="真实姓名" prop="real_name">
+    <el-input v-model="formData.real_name" disabled clearable placeholder="请输入真实姓名" />
 </el-form-item>
-                <el-form-item label="用户昵称" prop="nickname">
-    <el-input v-model="formData.nickname" clearable placeholder="请输入用户昵称" />
+                <el-form-item v-if="formData.is_show == 1" label="用户昵称" prop="nickname">
+    <el-input v-model="formData.nickname" disabled clearable placeholder="请输入用户昵称" />
 </el-form-item>
-                <el-form-item label="用户账号" prop="account">
+                <el-form-item v-if="formData.is_show == 1" label="用户账号" prop="account">
     <el-input v-model="formData.account" disabled clearable placeholder="请输入用户账号" />
 </el-form-item>
-                <el-form-item label="用户密码" prop="password">
-    <el-input v-model="formData.password" clearable placeholder="请输入用户密码" />
+                <el-form-item v-if="formData.is_show == 1" label="用户密码" prop="password">
+    <el-input v-model="formData.password" clearable placeholder="请输入用户密码 留空为不修改" />
 </el-form-item>
-                <el-form-item label="用户电话" prop="mobile">
+                <el-form-item v-if="formData.is_show == 1" label="用户电话" prop="mobile">
     <el-input v-model="formData.mobile" clearable placeholder="请输入用户电话" />
 </el-form-item>
-                <el-form-item label="性别" prop="sex">
-					 <el-select
-					      v-model="formData.sex"
-					      placeholder="选择性别"
-					      size="large"
-					      style="width: 240px"
-					    >
-					      <el-option
-					        v-for="item in options"
-					        :key="item.value"
-					        :label="item.label"
-					        :value="item.value"
-					      />
-					    </el-select>
+  <el-form-item v-if="formData.is_show == 2" label="增加/降低" prop="is_type">
+	   <el-select
+	        v-model="formData.is_type"
+	        placeholder="Select"
+	        size="large"
+	        style="width: 240px"
+	      >
+	        <el-option
+	          v-for="item in lists"
+	          :key="item.value"
+	          :label="item.label"
+	          :value="item.value"
+	        />
+	      </el-select>
+    
 </el-form-item>
-                <el-form-item label="注册渠道" prop="channel">
-					<el-select
-					     v-model="formData.channel"
-					     placeholder="选择注册渠道"
-					     size="large"
-					     style="width: 240px"
-					   >
-					     <el-option
-					       v-for="item in optionss"
-					       :key="item.value"
-					       :label="item.label"
-					       :value="item.value"
-					     />
-					   </el-select>
+ <el-form-item v-if="formData.is_show == 2" label="金额" prop="money">
+    <el-input v-model="formData.money" clearable placeholder="请输入调整金额" />
 </el-form-item>
-                <el-form-item label="是否禁用" prop="is_disable">
+              
+               
+                <el-form-item v-if="formData.is_show == 1" label="是否禁用" prop="is_disable">
 					<el-select
 					     v-model="formData.is_disable"
 					     placeholder="选择是否禁用"
@@ -75,58 +66,12 @@
 					     />
 					   </el-select>
 </el-form-item>
-                <el-form-item label="登录IP" prop="login_ip">
-    <el-input v-model="formData.login_ip" disabled clearable placeholder="" />
-</el-form-item>
-                <el-form-item label="登录时间" prop="login_time">
-    <el-date-picker 
-		disabled
-        class="flex-1 !flex"
-        v-model="formData.login_time"
-        clearable
-        type="datetime"
-        value-format="YYYY-MM-DD HH:mm:ss"
-        placeholder="">
-    </el-date-picker>
-</el-form-item>
-
-                <el-form-item label="是否新用户" prop="is_new_user">
-					<el-select
-					     v-model="formData.is_new_user"
-					     placeholder="选择是否新用户"
-					     size="large"
-					     style="width: 240px"
-					   >
-					     <el-option
-					       v-for="item in optionsss"
-					       :key="item.value"
-					       :label="item.label"
-					       :value="item.value"
-					     />
-					   </el-select>
-</el-form-item>
-                <el-form-item label="用户余额" prop="user_money">
-    <el-input v-model="formData.user_money" clearable placeholder="请输入用户余额" />
-</el-form-item>
-                <el-form-item label="累计充值" prop="total_recharge_amount">
-    <el-input v-model="formData.total_recharge_amount" clearable placeholder="请输入累计充值" />
-</el-form-item>
-                <el-form-item label="锁定余额" prop="frozen_balance">
-    <el-input v-model="formData.frozen_balance" clearable placeholder="请输入锁定余额" />
-</el-form-item>
-                <el-form-item label="VIP等级" prop="level_id">
+                          
+                <el-form-item v-if="formData.is_show == 1" label="VIP等级" prop="level_id">
     <el-input v-model="formData.level_id" clearable placeholder="请输入VIP等级" />
 </el-form-item>
-                <el-form-item label="登录状态" prop="login_status">
-    <el-input v-model="formData.login_status" clearable placeholder="请输入登录状态" />
-</el-form-item>
-                <el-form-item label="代理" prop="agent_id">
-					<el-select v-model="formData.agent_id"  placeholder="请选择代理" style="width: 300px">
-					    <el-option v-for="item in customerList" :key="item.id" :label="item.nickname"
-					        :value="item.id" />
-					</el-select>
-</el-form-item>
-                <el-form-item label="用户邮箱" prop="email">
+                             
+                <el-form-item v-if="formData.is_show == 1" label="用户邮箱" prop="email">
     <el-input v-model="formData.email" clearable placeholder="请输入用户邮箱" />
 </el-form-item>
             </el-form>
@@ -151,6 +96,19 @@ const emit = defineEmits(['success', 'close'])
 const formRef = shallowRef<FormInstance>()
 const popupRef = shallowRef<InstanceType<typeof Popup>>()
 const mode = ref('add')
+const value = ref('')
+
+const lists = [
+  {
+    value: 1,
+    label: '增加',
+  },
+  {
+    value: 2,
+    label: '降低',
+  },
+ 
+]
 const options = [
   {
     value: 1,
@@ -206,6 +164,9 @@ const optionss = [
 
 // 弹窗标题
 const popupTitle = computed(() => {
+	if(formData.is_show == 2){
+		return '加/扣款';
+	}
     return mode.value == 'edit' ? '编辑用户表' : '新增用户表'
 })
 
@@ -219,19 +180,12 @@ const formData = reactive({
     account: '',
     password: '',
     mobile: '',
-    sex: '',
-    channel: '',
     is_disable: '',
-    login_ip: '',
-    login_time: '',
-    is_new_user: '',
-    user_money: '',
-    total_recharge_amount: '',
-    frozen_balance: '',
     level_id: '',
-    login_status: '',
-    agent_id: '',
     email: '',
+	is_show:1,
+	is_type:1,
+	money:'',
 })
 
 // 客户列表
@@ -248,26 +202,7 @@ getCustomerList()
 
 // 表单验证
 const formRules = reactive<any>({
-    nickname: [{
-        required: true,
-        message: '请输入用户昵称',
-        trigger: ['blur']
-    }],
-    account: [{
-        required: true,
-        message: '请输入用户账号',
-        trigger: ['blur']
-    }],
-    channel: [{
-        required: true,
-        message: '请输入注册渠道',
-        trigger: ['blur']
-    }],
-    is_disable: [{
-        required: true,
-        message: '请输入是否禁用',
-        trigger: ['blur']
-    }],
+   
     
    
 })

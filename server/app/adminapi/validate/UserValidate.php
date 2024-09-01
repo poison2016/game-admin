@@ -32,17 +32,7 @@ class UserValidate extends BaseValidate
       */
     protected $rule = [
         'id' => 'require',
-        'sn' => 'require',
-        'nickname' => 'require',
-        'account' => 'require',
-        'password' => 'require',
-        'channel' => 'require',
-        'is_disable' => 'require',
-        'is_new_user' => 'require',
-        'frozen_balance' => 'require',
-        'level_id' => 'require',
-        'login_status' => 'require',
-        'agent_id' => 'require',
+
     ];
 
 
@@ -52,17 +42,7 @@ class UserValidate extends BaseValidate
      */
     protected $field = [
         'id' => 'id',
-        'sn' => '编号',
-        'nickname' => '用户昵称',
-        'account' => '用户账号',
-        'password' => '用户密码',
-        'channel' => '注册渠道',
-        'is_disable' => '是否禁用',
-        'is_new_user' => '是否是新注册用户:',
-        'frozen_balance' => '锁定余额',
-        'level_id' => 'VIP等级',
-        'login_status' => '登录状态',
-        'agent_id' => '代理id',
+
     ];
 
 
@@ -74,7 +54,7 @@ class UserValidate extends BaseValidate
      */
     public function sceneAdd()
     {
-        return $this->only(['sn','nickname','account','password','channel','is_disable','is_new_user','frozen_balance','level_id','login_status','agent_id']);
+        return $this->only([]);
     }
 
 
@@ -86,7 +66,7 @@ class UserValidate extends BaseValidate
      */
     public function sceneEdit()
     {
-        return $this->only(['id','sn','nickname','account','password','channel','is_disable','is_new_user','frozen_balance','level_id','login_status','agent_id']);
+        return $this->only(['id',]);
     }
 
 
