@@ -53,8 +53,6 @@ class DsfService
      */
     function sendPostRequest($url, $postData, $headers = [])
     {
-        var_dump('请求得url---'.$url);
-        var_dump($postData);
         // 初始化 curl
         $ch = curl_init();
 
@@ -79,7 +77,6 @@ class DsfService
 
         // 执行请求并获取结果
         $result = curl_exec($ch);
-var_dump($result);
         // 获取错误信息
         if (curl_errno($ch)) {
             $error = curl_error($ch);
