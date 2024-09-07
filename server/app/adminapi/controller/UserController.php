@@ -99,7 +99,7 @@ class UserController extends BaseAdminController
             'orderId'=>$this->generateRandomString(),
             'user_id'=>input('user_id'),
         ];
-
+        $inset['create_time'] = time();
         Db::name('user_game_money_log')->insert($inset);
         $ret = (new DsfService())->sendUrl('/api/server/transfer',$data);
         if(!$ret){
