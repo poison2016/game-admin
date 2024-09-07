@@ -13,10 +13,10 @@ class DsfService
     {
         $random = self::generateRandomString();
         $header = [
-            'sion' => md5($random . $this->sn . $this->key),
-            'random' => $random,
-            'sn' => $this->sn,
-            'Content-Type' => 'application/json',
+            'sion:'. md5($random . $this->sn . $this->key),
+            'random:'.$random,
+            'sn:'.$this->sn,
+            'Content-Type:application/json',
         ];
         return $header;
     }
