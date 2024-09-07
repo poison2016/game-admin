@@ -86,8 +86,51 @@ class UserController extends BaseAdminController
         if($ret['code'] != 10000){
             return $this->fail($ret['msg']);
         }
-        $this->success('获取成功',$ret);
+        return $this->success('获取成功',$ret);
     }
+
+    public function edzh(){
+        $inset = $data = [
+            'playerId'=>input('user_name'),
+            'platType'=>input('plat_type'),
+            'currency'=>'CNY',
+            'type'=>input('type'),
+            'amount'=>input('money'),
+            'orderId'=>$this->generateRandomString(),
+            'user_id'=>input('user_id'),
+        ];
+
+        Db::name('user_game_money_log')->insert($inset);
+        $ret = (new DsfService())->sendUrl('/api/server/transfer',$data);
+        if(!$ret){
+            return $this->fail('操作失败');
+        }
+        if($ret['code'] != 10000){
+            return $this->fail($ret['msg']);
+        }
+        return $this->success('操作成功');
+
+    }
+
+    function generateRandomString(): string
+    {
+        // 生成随机长度在 16 到 32 之间
+        $length = 32;
+
+        // 可用字符集：小写字母和数字
+        $characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+
+        // 根据随机长度生成字符串
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, $charactersLength - 1)];
+        }
+
+        return $randomString;
+    }
+
+
 
 
     /**

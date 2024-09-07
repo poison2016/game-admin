@@ -59,11 +59,11 @@
 					</el-col>
 					<el-col :span="8">
 								<el-form-item label="转账金额" prop="zl_money">
-								    <el-input v-model="formData.zl_money" disabled clearable placeholder="转账金额" />
+								    <el-input v-model="formData.zl_money" clearable placeholder="转账金额" />
 								</el-form-item>
 					</el-col>
 					<el-col :span="2">
-						<el-button type="success">额度转换</el-button>
+						<el-button type="success" @click="setUserGameData()">额度转换</el-button>
 					</el-col>
 				</el-row>
 				<el-row>
@@ -160,7 +160,7 @@
 <script lang="ts" setup name="userEdit">
 import type { FormInstance } from 'element-plus'
 import Popup from '@/components/popup/index.vue'
-import { apiUserAdd, apiUserEdit, apiUserDetail, getUserGame } from '@/api/users'
+import { apiUserAdd, apiUserEdit, apiUserDetail, getUserGame, setUserGame } from '@/api/users'
 import { timeFormat } from '@/utils/util'
 import type { PropType } from 'vue'
 import { apiUserDetailAll } from '@/api/users'
@@ -179,11 +179,11 @@ const value = ref('')
 
 const lists = [
   {
-    value: 1,
+    value: 2,
     label: '转出',
   },
   {
-    value: 2,
+    value: 1,
     label: '转入',
   },
  
@@ -304,6 +304,20 @@ async function getUserGameData(id: any) {
     const res = await getUserGame({
        user_name:formData.account,
 	   id:id
+	   
+    })
+	console.log(res)
+   // customerList.value = res
+}
+
+async function setUserGameData() {
+	 
+    const res = await setUserGame({
+       user_name:formData.account,
+	   user_id:formData.id,
+	   plat_type:formData.zl_pt,
+	   money:formData.zl_money,
+	   type:formData.zzlx
 	   
     })
 	console.log(res)

@@ -35,6 +35,11 @@ export function getUserGame(params: any) {
     return request.get({ url: '/user/getUserGameMoney', params })
 }
 
+// 转出转出
+export function setUserGame(params: any) {
+    return request.get({ url: '/user/edzh', params })
+}
+
 //代理列表
 export function apiUserDetailAll(params: any) {
     return request.get({ url: '/user/getDl', params })
