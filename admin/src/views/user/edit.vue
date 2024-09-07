@@ -17,8 +17,8 @@
 						</el-form-item>
 					</el-col>
 					<el-col :span="15">
-						<el-button type="danger">刷新余额</el-button>
-						<el-button type="danger" @click="getCustomerList()" >一键刷新</el-button>
+						<el-button type="danger"@click="getCustomerList">刷新余额</el-button>
+						<el-button type="danger" @click="getClassList()" >一键刷新</el-button>
 						<el-button type="danger">一键转出</el-button>
 					</el-col>
 					<el-col :span="6">
@@ -72,9 +72,9 @@
 							<el-col :span="3" style="border: 1px solid #999;border-radius: 5px;margin-top: 30px; margin-right: 10px;"  v-for="item in class_list" :key="item.id">
 								<el-row>
 									<el-col :span="17" style="text-align: center;border-right:  1px solid #999;">
-										<span>请刷新</span>
+										<span>{{item.user_money}}</span>
 									</el-col>
-									<el-col :span="7" @click="getCustomerList()" style="text-align: center;">
+									<el-col :span="7" @click="getClassList()" style="text-align: center;">
 										<el-icon><Refresh /></el-icon>
 									</el-col>
 								</el-row>
@@ -294,6 +294,7 @@ const getCustomerList = async () => {
     })
 	console.log(res)
     customerList.value = res
+	getClassList()
 }
 getCustomerList()
 
@@ -313,7 +314,7 @@ async function getUserGameData(id: any) {
 
 const class_list = ref([] as any[])// 获取仓库列表async function getClassList() {  const res = await apiYbPlatTypeLists({page_no: 1, page_size: 500,user_name: formData.account})
     class_list.value = res.lists}
-getClassList()
+
 
 
 // 表单验证

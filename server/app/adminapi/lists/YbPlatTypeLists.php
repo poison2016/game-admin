@@ -66,13 +66,14 @@ class YbPlatTypeLists extends BaseAdminDataLists implements ListsSearchInterface
             $v['is_new_str'] = $v['is_new'] == 1 ? '是' : '否';
             $v['user_money'] = 0;
             if (input('user_name')) {
-                $data = [
+                $arr = [
                     'playerId' => input('user_name'),
                     'currency' => 'CNY'
                 ];
-                $ret = (new DsfService())->sendUrl('/api/server/balanceAll', $data);
+                $ret = (new DsfService())->sendUrl('/api/server/balanceAll', $arr);
+
                 if ($ret) {
-                    if ($ret['code'] == 10000) {
+                    if (!empty($ret['code']) && $ret['code'] == 10000) {
                         foreach ($ret['data'] as $item) {
                             if (!empty($item[$v['plat_type']])) {
                                 $v['user_money'] = $item[$v['plat_type']];
@@ -80,9 +81,10 @@ class YbPlatTypeLists extends BaseAdminDataLists implements ListsSearchInterface
                         }
                     }
                 }
-            }
-        }
 
+            }
+
+        }
 
         return $data;
     }

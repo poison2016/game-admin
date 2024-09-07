@@ -39,6 +39,11 @@ class DsfService
         return $randomString;
     }
 
+    /**
+     * @param $url
+     * @param $data
+     * @return array|mixed
+     */
     function sendUrl($url,$data)
     {
         return self::sendPostRequest($this->api.$url,$data,self::sign());
@@ -49,7 +54,6 @@ class DsfService
      * @param string $url 请求的 URL
      * @param array|string $postData 发送的 POST 数据
      * @param array $headers 自定义请求头 (可选)
-     * @return string|false 返回请求结果，或者失败时返回 false
      */
     function sendPostRequest($url, $postData, $headers = [])
     {
@@ -81,7 +85,7 @@ class DsfService
         if (curl_errno($ch)) {
             $error = curl_error($ch);
             curl_close($ch);
-            return false; // 请求失败，返回 false
+            return []; // 请求失败，返回 false
         }
 
         // 关闭 curl
@@ -91,7 +95,7 @@ class DsfService
         if($result){
             return json_decode($result,true);
         }
-        return false;
+        return [];
     }
 
 }
