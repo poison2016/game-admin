@@ -83,7 +83,9 @@ class UserController extends BaseAdminController
         if(!$ret){
             return $this->fail('获取信息失败');
         }
-        var_dump($ret);
+        if($ret['code'] != 10000){
+            return $this->fail($ret['msg']);
+        }
         $this->success('获取成功',$ret);
     }
 
