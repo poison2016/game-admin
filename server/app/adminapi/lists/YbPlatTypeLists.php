@@ -16,6 +16,7 @@ namespace app\adminapi\lists;
 
 
 use app\adminapi\lists\BaseAdminDataLists;
+use app\adminapi\service\DsfService;
 use app\common\model\YbPlatType;
 use app\common\lists\ListsSearchInterface;
 
@@ -54,16 +55,35 @@ class YbPlatTypeLists extends BaseAdminDataLists implements ListsSearchInterface
      */
     public function lists(): array
     {
-        $data =  YbPlatType::where($this->searchWhere)
+        $data = YbPlatType::where($this->searchWhere)
             ->limit($this->limitOffset, $this->limitLength)
             ->order(['id' => 'desc'])
             ->select()
             ->toArray();
-        foreach ($data as &$v){
-            $v['is_open_str'] = $v['is_open'] == 1?'开启':'关闭';
-            $v['is_hot_str'] = $v['is_hot'] == 1?'是':'否';
-            $v['is_new_str'] = $v['is_new'] == 1?'是':'否';
+        foreach ($data as &$v) {
+            $v['is_open_str'] = $v['is_open'] == 1 ? '开启' : '关闭';
+            $v['is_hot_str'] = $v['is_hot'] == 1 ? '是' : '否';
+            $v['is_new_str'] = $v['is_new'] == 1 ? '是' : '否';
+            $v['user_money'] = 0;
+            if (input('user_name')) {
+                $data = [
+                    'playerId' => input('user_name'),
+                    'currency' => 'CNY'
+                ];
+                $ret = (new DsfService())->sendUrl('/api/server/balanceAll', $data);
+                if ($ret) {
+                    if ($ret['code'] == 10000) {
+                        foreach ($ret['data'] as $item) {
+                            if (!empty($item[$v['plat_type']])) {
+                                $v['user_money'] = $item[$v['plat_type']];
+                            }
+                        }
+                    }
+                }
+            }
         }
+
+
         return $data;
     }
 

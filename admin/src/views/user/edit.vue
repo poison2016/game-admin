@@ -18,7 +18,7 @@
 					</el-col>
 					<el-col :span="15">
 						<el-button type="danger">刷新余额</el-button>
-						<el-button type="danger">一键刷新</el-button>
+						<el-button type="danger" @click="getCustomerList()" >一键刷新</el-button>
 						<el-button type="danger">一键转出</el-button>
 					</el-col>
 					<el-col :span="6">
@@ -74,7 +74,7 @@
 									<el-col :span="17" style="text-align: center;border-right:  1px solid #999;">
 										<span>请刷新</span>
 									</el-col>
-									<el-col :span="7" @click="getUserGameData(item.id)" style="text-align: center;">
+									<el-col :span="7" @click="getCustomerList()" style="text-align: center;">
 										<el-icon><Refresh /></el-icon>
 									</el-col>
 								</el-row>
@@ -311,7 +311,7 @@ async function getUserGameData(id: any) {
 
 
 
-const class_list = ref([] as any[])// 获取仓库列表async function getClassList() {  const res = await apiYbPlatTypeLists({page_no: 1, page_size: 500})
+const class_list = ref([] as any[])// 获取仓库列表async function getClassList() {  const res = await apiYbPlatTypeLists({page_no: 1, page_size: 500,user_name: formData.account})
     class_list.value = res.lists}
 getClassList()
 
