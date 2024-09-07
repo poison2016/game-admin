@@ -41,7 +41,7 @@ class DsfService
 
     function sendUrl($url,$data)
     {
-        return self::sendPostRequest($this->api.$url,$data);
+        return self::sendPostRequest($this->api.$url,$data,$this->sign());
     }
 
     /**
@@ -53,15 +53,13 @@ class DsfService
      */
     function sendPostRequest($url, $postData, $headers = [])
     {
-        var_dump('请求得url---'.$url);
-        var_dump($postData);
         // 初始化 curl
         $ch = curl_init();
 
-        // 判断传入的 POST 数据格式
-        if (is_array($postData)) {
-            $postData = http_build_query($postData); // 将数组格式化为 URL 编码字符串
-        }
+//        // 判断传入的 POST 数据格式
+//        if (is_array($postData)) {
+//            $postData = http_build_query($postData); // 将数组格式化为 URL 编码字符串
+//        }
 
         // 设置 curl 选项
         curl_setopt($ch, CURLOPT_URL, $url);                 // 设置请求 URL
