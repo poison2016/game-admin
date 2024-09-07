@@ -79,7 +79,7 @@ class UserController extends BaseAdminController
             'platType'=>$type,
             'currency'=>'CNY'
         ];
-        $ret = (new DsfService())->sendUrl('/api/server/create',$data);
+        $ret = (new DsfService())->sendUrl('/api/server/balance',$data);
         if(!$ret){
             return $this->fail('获取信息失败');
         }
