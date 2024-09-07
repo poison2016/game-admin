@@ -41,7 +41,7 @@ class DsfService
 
     function sendUrl($url,$data)
     {
-        return self::sendPostRequest($this->api.$url,$data,self::sign());
+        return self::sendPostRequest($this->api.$url,$data);
     }
 
     /**
