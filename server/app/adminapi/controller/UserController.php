@@ -19,7 +19,9 @@ namespace app\adminapi\controller;
 use app\adminapi\controller\BaseAdminController;
 use app\adminapi\lists\UserLists;
 use app\adminapi\logic\UserLogic;
+use app\adminapi\service\DsfService;
 use app\adminapi\validate\UserValidate;
+use app\common\model\YbPlatType;
 use think\facade\Db;
 
 
@@ -63,6 +65,26 @@ class UserController extends BaseAdminController
             return $this->success('添加成功', [], 1, 1);
         }
         return $this->fail(UserLogic::getError());
+    }
+
+    public function getUserGameMoney(){
+        $id = input('id');
+        $userName  = input('user_name');
+        $type = YbPlatType::getUserGameData($id);
+        if(!$type){
+            return $this->fail('游戏类型获取失败');
+        }
+        $data = [
+            'playerId'=>$userName,
+            'platType'=>$type,
+            'currency'=>'CNY'
+        ];
+        $ret = (new DsfService())->sendUrl('/api/server/create',$data);
+        if(!$ret){
+            return $this->fail('获取信息失败');
+        }
+        var_dump($ret);
+        $this->success('获取成功',$ret);
     }
 
 

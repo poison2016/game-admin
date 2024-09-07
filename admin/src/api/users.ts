@@ -30,6 +30,11 @@ export function apiUserDetail(params: any) {
     return request.get({ url: '/user/detail', params })
 }
 
+// 用户表详情
+export function getUserGame(params: any) {
+    return request.get({ url: '/user/getUserGameMoney', params })
+}
+
 //代理列表
 export function apiUserDetailAll(params: any) {
     return request.get({ url: '/user/getDl', params })

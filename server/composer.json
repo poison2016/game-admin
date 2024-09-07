@@ -34,7 +34,8 @@
         "rmccue/requests": "^2.0",
         "w7corp/easywechat": "^6.8",
         "tencentcloud/sms": "^3.0",
-        "alipaysdk/easysdk": "^2.2"
+        "alipaysdk/easysdk": "^2.2",
+      "ext-curl": "*"
     },
     "require-dev": {
         "symfony/var-dumper": ">=4.2",

@@ -28,6 +28,10 @@ class YbPlatType extends BaseModel
 {
     
     protected $table = 'yb_plat_type';
+
+    public static  function getUserGameData($id){
+       return self::where('id',$id)->value('plat_type');
+    }
     
 
     

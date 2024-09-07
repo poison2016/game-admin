@@ -4,11 +4,89 @@
             ref="popupRef"
             :title="popupTitle"
             :async="true"
-            width="60%"
+            width="80%"
             @confirm="handleSubmit"
             @close="handleClose"
         >
+		
             <el-form ref="formRef" :model="formData" label-width="90px" :rules="formRules">
+				<el-row v-if="formData.is_show == 3" :gutter="20">
+					<el-col :span="8">
+						<el-form-item label="用户余额" prop="user_money">
+						    <el-input v-model="formData.user_money" disabled clearable placeholder="当前用户余额" />
+						</el-form-item>
+					</el-col>
+					<el-col :span="15">
+						<el-button type="danger">刷新余额</el-button>
+						<el-button type="danger">一键刷新</el-button>
+						<el-button type="danger">一键转出</el-button>
+					</el-col>
+					<el-col :span="6">
+						<el-form-item label="转账类型" prop="user_money">
+							<el-select
+							     v-model="formData.zzlx"
+							     placeholder="选择转账类型"
+							     size="large"
+							     style="width: 240px"
+							   >
+							     <el-option
+							       v-for="item in zclx"
+							       :key="item.value"
+							       :label="item.label"
+							       :value="item.value"
+							     />
+							   </el-select>
+						</el-form-item>
+						 
+					</el-col>
+					<el-col :span="6">
+						<el-form-item label="转账平台" prop="zl_pt">
+							<el-select
+							     v-model="formData.zl_pt"
+							     placeholder="选择转账类型"
+							     size="large"
+							     style="width: 240px"
+							   >
+							     <el-option
+							       v-for="item in class_list"
+							       :key="item.id"
+							       :label="item.game_title"
+							       :value="item.id"
+							     />
+							   </el-select>
+						</el-form-item>
+						 
+					</el-col>
+					<el-col :span="8">
+								<el-form-item label="转账金额" prop="zl_money">
+								    <el-input v-model="formData.zl_money" disabled clearable placeholder="转账金额" />
+								</el-form-item>
+					</el-col>
+					<el-col :span="2">
+						<el-button type="success">额度转换</el-button>
+					</el-col>
+				</el-row>
+				<el-row>
+					<el-col :span="22" :offset="1">
+						<el-row :gutter="5">
+							<el-col :span="3" style="border: 1px solid #999;border-radius: 5px;margin-top: 30px; margin-right: 10px;"  v-for="item in class_list" :key="item.id">
+								<el-row>
+									<el-col :span="17" style="text-align: center;border-right:  1px solid #999;">
+										<span>请刷新</span>
+									</el-col>
+									<el-col :span="7" @click="getUserGameData(item.id)" style="text-align: center;">
+										<el-icon><Refresh /></el-icon>
+									</el-col>
+								</el-row>
+								<el-row>
+									<el-col :span="24" style="text-align: center;border-top: 1px solid #999;color: red;">
+										<span>{{item.game_title}}</span>
+									</el-col>
+								</el-row>
+							</el-col>
+						</el-row>
+					</el-col>
+				</el-row>
                 <el-form-item v-if="formData.is_show == 1" label="邀请码" prop="sn">
     <el-input v-model="formData.sn" disabled clearable placeholder="请输入邀请码" />
 </el-form-item>
@@ -82,10 +160,11 @@
 <script lang="ts" setup name="userEdit">
 import type { FormInstance } from 'element-plus'
 import Popup from '@/components/popup/index.vue'
-import { apiUserAdd, apiUserEdit, apiUserDetail } from '@/api/users'
+import { apiUserAdd, apiUserEdit, apiUserDetail, getUserGame } from '@/api/users'
 import { timeFormat } from '@/utils/util'
 import type { PropType } from 'vue'
 import { apiUserDetailAll } from '@/api/users'
+import { apiYbPlatTypeLists } from '@/api/yb_plat_type'
 defineProps({
     dictData: {
         type: Object as PropType<Record<string, any[]>>,
@@ -99,6 +178,18 @@ const mode = ref('add')
 const value = ref('')
 
 const lists = [
+  {
+    value: 1,
+    label: '转出',
+  },
+  {
+    value: 2,
+    label: '转入',
+  },
+ 
+]
+
+const zclx = [
   {
     value: 1,
     label: '增加',
@@ -167,6 +258,9 @@ const popupTitle = computed(() => {
 	if(formData.is_show == 2){
 		return '加/扣款';
 	}
+	if(formData.is_show == 3){
+		return '额度管理';
+	}
     return mode.value == 'edit' ? '编辑用户表' : '新增用户表'
 })
 
@@ -186,6 +280,10 @@ const formData = reactive({
 	is_show:1,
 	is_type:1,
 	money:'',
+	user_money:'',
+	zzlx:'',
+	zl_pt:'',
+	zl_money:'',
 })
 
 // 客户列表
@@ -198,6 +296,24 @@ const getCustomerList = async () => {
     customerList.value = res
 }
 getCustomerList()
+
+
+async function getUserGameData(id: any) {
+	 console.log('获取到得参数',id)
+    const res = await getUserGame({
+       user_name:formData.account,
+	   id:id
+	   
+    })
+	console.log(res)
+   // customerList.value = res
+}
+
+
+
+const class_list = ref([] as any[])// 获取仓库列表async function getClassList() {  const res = await apiYbPlatTypeLists({page_no: 1, page_size: 500})
+    class_list.value = res.lists}
+getClassList()
 
 
 // 表单验证

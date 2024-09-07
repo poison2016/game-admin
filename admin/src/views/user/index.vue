@@ -86,7 +86,7 @@
 							    v-perms="['user/edit']"
 							    type="primary"
 							    link
-							    @click="handleEdit(row)"
+							    @click="edEdit(row)"
 							>
 							    额度管理
 							</el-button>
@@ -170,6 +170,15 @@ const handleEdit = async (data: any) => {
     showEdit.value = true
     await nextTick()
 	data.is_show = 1;
+    editRef.value?.open('edit')
+    editRef.value?.setFormData(data)
+}
+
+// 编辑
+const edEdit = async (data: any) => {
+    showEdit.value = true
+    await nextTick()
+	data.is_show = 3;
     editRef.value?.open('edit')
     editRef.value?.setFormData(data)
 }
