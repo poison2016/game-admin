@@ -24,7 +24,7 @@ class DsfService
     function generateRandomString(): string
     {
         // 生成随机长度在 16 到 32 之间
-        $length = rand(16, 32);
+        $length = 32;
 
         // 可用字符集：小写字母和数字
         $characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
