@@ -59,11 +59,18 @@ class UserWithdrawLists extends BaseAdminDataLists implements ListsSearchInterfa
         if(input('user_id')){
             $where['u.id'] = input('user_id');
         }
-        return Db::name('user_withdraw')->alias('uw')->field('uw.*,u.account')->join('user u','u.id = uw.user_id','LEFT')->where($where)
+        $data =  Db::name('user_withdraw')->alias('uw')->field('uw.*,u.account,ua.xy_lx,ua.address')
+            ->join('user u','u.id = uw.user_id','LEFT')->where($where)
+            ->join('user_withdraw_account ua','ua.id = uw.withdraw_account_id','LEFT')->where($where)
             ->limit($this->limitOffset, $this->limitLength)
             ->order('type,id DESC')
             ->select()
             ->toArray();
+        foreach ($data as &$item){
+            $item['number'] = $item['number']?$item['number']:$item['address'];
+            $item['w_type'] = $item['xy_lx'] == 1?'trc20':'erc20';
+        }
+        return $data;
     }
 
 

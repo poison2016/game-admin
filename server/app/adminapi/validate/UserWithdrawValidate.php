@@ -35,8 +35,7 @@ class UserWithdrawValidate extends BaseValidate
         'user_id' => 'require',
         'money' => 'require',
         'type' => 'require',
-        'withdraw_type' => 'require',
-        'number' => 'require',
+
     ];
 
 
@@ -49,8 +48,7 @@ class UserWithdrawValidate extends BaseValidate
         'user_id' => '用户id',
         'money' => '提现金额',
         'type' => '提现状态',
-        'withdraw_type' => '提现类型',
-        'number' => '卡号/卡号',
+
     ];
 
 
@@ -62,7 +60,7 @@ class UserWithdrawValidate extends BaseValidate
      */
     public function sceneAdd()
     {
-        return $this->only(['user_id','money','type','withdraw_type','number']);
+        return $this->only(['user_id','money','type']);
     }
 
 
@@ -74,7 +72,7 @@ class UserWithdrawValidate extends BaseValidate
      */
     public function sceneEdit()
     {
-        return $this->only(['id','user_id','money','type','withdraw_type','number']);
+        return $this->only(['id','user_id','money','type']);
     }
 
 
