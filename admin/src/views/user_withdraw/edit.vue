@@ -16,27 +16,24 @@
     <el-input v-model="formData.money" disabled clearable placeholder="请输入提现金额" />
 </el-form-item>
                 <el-form-item label="提现状态" prop="type">
-    <el-select class="flex-1" v-model="formData.type" clearable placeholder="请选择提现状态">
-        <el-option 
-            v-for="(item, index) in dictData.w_status"
-            :key="index" 
-            :label="item.name"
-            :value="parseInt(item.value)"
-        />
-    </el-select>
+					<el-select
+					      v-model="formData.type"
+					      placeholder="请选择提现状态"
+					    >
+					      <el-option
+					        v-for="item in options"
+					        :key="item.value"
+					        :label="item.label"
+					        :value="item.value"
+					      />
+					    </el-select>
+   
 </el-form-item>
                 <el-form-item label="备注" prop="remarks">
     <el-input class="flex-1" v-model="formData.remarks" type="textarea" rows="4" clearable placeholder="请输入备注" />
 </el-form-item>
                 <el-form-item label="提现类型" prop="withdraw_type">
-    <el-select class="flex-1" disabled v-model="formData.withdraw_type" clearable placeholder="请选择提现类型">
-        <el-option 
-            v-for="(item, index) in dictData.w_type"
-            :key="index" 
-            :label="item.name"
-            :value="parseInt(item.value)"
-        />
-    </el-select>
+    <el-input v-model="formData.w_type" disabled clearable placeholder="请输入卡号/卡号" />
 </el-form-item>
                 <el-form-item label="卡号/账号" prop="number">
     <el-input v-model="formData.number" disabled clearable placeholder="请输入卡号/卡号" />
@@ -79,8 +76,23 @@ const formData = reactive({
     remarks: '',
     withdraw_type: '',
     number: '',
+	w_type:''
 })
-
+const options = [
+  {
+    value: 0,
+    label: '审核中',
+  },
+  {
+    value: 1,
+    label: '通过',
+  },
+  {
+    value: 2,
+    label: '拒绝',
+  },
+ 
+]
 
 // 表单验证
 const formRules = reactive<any>({

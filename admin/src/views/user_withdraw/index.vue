@@ -25,15 +25,13 @@
                     <el-table-column label="提现金额" prop="money" show-overflow-tooltip />
                     <el-table-column label="提现状态" prop="type">
     <template #default="{ row }">
-        <dict-value :options="dictData.w_status" :value="row.type" />
+		<span v-if="row.type == 0">审核中</span>
+		<span v-if="row.type == 1">通过</span>
+		<span v-if="row.type == 2">拒绝</span>
     </template>
 </el-table-column>
-                    <el-table-column label="备注" prop="remarks" show-overflow-tooltip />
-                    <el-table-column label="提现类型" prop="withdraw_type">
-    <template #default="{ row }">
-        <dict-value :options="dictData.w_type" :value="row.withdraw_type" />
-    </template>
-</el-table-column>
+                    
+                    <el-table-column label="提现类型" prop="w_type"  show-overflow-tooltip/>
                     <el-table-column label="卡号/帐号" prop="number" show-overflow-tooltip />
 					<el-table-column label="发起时间" prop="create_time">
 					    <template #default="{ row }">
@@ -44,7 +42,9 @@
     <template #default="{ row }">
       <span>{{ row.withdraw_time ? timeFormat(row.withdraw_time, 'yyyy-mm-dd hh:MM:ss') : '' }}</span>
     </template>
+	
 </el-table-column>
+<el-table-column label="备注" prop="remarks" show-overflow-tooltip />
                     <el-table-column label="操作" width="120" fixed="right">
                         <template #default="{ row }">
                              <el-button
