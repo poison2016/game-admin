@@ -71,14 +71,11 @@ class YbPlatTypeLists extends BaseAdminDataLists implements ListsSearchInterface
                     'currency' => 'CNY'
                 ];
                 $ret = (new DsfService())->sendUrl('/api/server/balanceAll', $arr);
-var_dump($ret);
-var_dump('----------');
+
                 if ($ret) {
                     if (!empty($ret['code']) && $ret['code'] == 200) {
                         $code = json_decode($ret['data'],true);
-                        var_dump($code);exit();
                         if($code['code'] == 10000){
-                            var_dump($code['data']);exit();
                             foreach ($code['data'] as $item) {
                                 if (!empty($item[$v['plat_type']])) {
                                     $v['user_money'] = $item[$v['plat_type']];

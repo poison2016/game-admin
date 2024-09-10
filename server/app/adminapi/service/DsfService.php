@@ -73,7 +73,6 @@ class DsfService
 
         // 执行请求并获取结果
         $result = curl_exec($ch);
-var_dump($result);
         // 获取错误信息
         if (curl_errno($ch)) {
             $error = curl_error($ch);
