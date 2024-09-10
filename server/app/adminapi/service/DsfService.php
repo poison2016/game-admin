@@ -5,21 +5,10 @@ namespace app\adminapi\service;
 class DsfService
 {
 
-    protected $api = 'https://ap.api-bet.net';
-    protected $sn = 'p7d';
-    protected $key = '93544732n3s557t4GW5225565FSAR36l';
+    protected $api = 'https://www.chingold.org/api/guest/postGameApi';
 
-    public function sign()
-    {
-        $random = self::generateRandomString();
-        $header = [
-            'sion:'. md5($random . $this->sn . $this->key),
-            'random:'.$random,
-            'sn:'.$this->sn,
-            'Content-Type:application/json',
-        ];
-        return $header;
-    }
+
+
 
     function generateRandomString(): string
     {
@@ -46,7 +35,11 @@ class DsfService
      */
     function sendUrl($url,$data)
     {
-        return self::sendPostRequest($this->api.$url,$data,self::sign());
+        $sendData = [
+            'url'=>$url,
+            'method'=>json_encode($data)
+        ];
+        return self::sendPostRequest($this->api,$sendData);
     }
 
     /**
@@ -59,11 +52,10 @@ class DsfService
     {
         // 初始化 curl
         $ch = curl_init();
-
         // 判断传入的 POST 数据格式
-        if (is_array($postData)) {
-            $postData = http_build_query($postData); // 将数组格式化为 URL 编码字符串
-        }
+//        if (is_array($postData)) {
+//            $postData = http_build_query($postData); // 将数组格式化为 URL 编码字符串
+//        }
 
         // 设置 curl 选项
         curl_setopt($ch, CURLOPT_URL, $url);                 // 设置请求 URL
@@ -81,6 +73,7 @@ class DsfService
 
         // 执行请求并获取结果
         $result = curl_exec($ch);
+var_dump($result);
         // 获取错误信息
         if (curl_errno($ch)) {
             $error = curl_error($ch);

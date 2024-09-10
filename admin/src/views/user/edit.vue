@@ -18,7 +18,7 @@
 					</el-col>
 					<el-col :span="15">
 						<el-button type="danger"@click="getCustomerList">刷新余额</el-button>
-						<el-button type="danger" @click="getClassList()" >一键刷新</el-button>
+						<el-button type="danger" @click="getClassList(1)" >一键刷新</el-button>
 						<el-button type="danger">一键转出</el-button>
 					</el-col>
 					<el-col :span="6">
@@ -74,7 +74,7 @@
 									<el-col :span="17" style="text-align: center;border-right:  1px solid #999;">
 										<span>{{item.user_money}}</span>
 									</el-col>
-									<el-col :span="7" @click="getClassList()" style="text-align: center;">
+									<el-col :span="7" @click="getClassList(1)" style="text-align: center;">
 										<el-icon><Refresh /></el-icon>
 									</el-col>
 								</el-row>
@@ -294,7 +294,7 @@ const getCustomerList = async () => {
     })
 	console.log(res)
     customerList.value = res
-	getClassList()
+	getClassList(0)
 }
 getCustomerList()
 
@@ -326,7 +326,11 @@ async function setUserGameData() {
 
 
 
-const class_list = ref([] as any[])// 获取仓库列表async function getClassList() {  const res = await apiYbPlatTypeLists({page_no: 1, page_size: 500,user_name: formData.account})
+const class_list = ref([] as any[])// 获取仓库列表async function getClassList(type: any) {
+	let account = '';
+	if(type == 1){
+		account = formData.account;
+	}  const res = await apiYbPlatTypeLists({page_no: 1, page_size: 500,user_name: account})
     class_list.value = res.lists}
 
 
