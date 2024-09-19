@@ -60,28 +60,27 @@ class YbPlatTypeLists extends BaseAdminDataLists implements ListsSearchInterface
             ->order(['id' => 'desc'])
             ->select()
             ->toArray();
+        if (input('user_name')) {
+            $arr = [
+                'playerId' => input('user_name'),
+                'currency' => 'CNY'
+            ];
+            $ret = (new DsfService())->sendUrl('/api/server/balanceAll', $arr);
+        }
+
         foreach ($data as &$v) {
             $v['is_open_str'] = $v['is_open'] == 1 ? '开启' : '关闭';
             $v['is_hot_str'] = $v['is_hot'] == 1 ? '是' : '否';
             $v['is_new_str'] = $v['is_new'] == 1 ? '是' : '否';
             $v['user_money'] = 0;
             if (input('user_name')) {
-                $arr = [
-                    'playerId' => input('user_name'),
-                    'currency' => 'CNY'
-                ];
-                $ret = (new DsfService())->sendUrl('/api/server/balanceAll', $arr);
-
                 if ($ret) {
-                    if (!empty($ret['code']) && $ret['code'] == 200) {
-                        $code = json_decode($ret['data'],true);
-                        if($code['code'] == 10000){
-                            foreach ($code['data'] as $item) {
+                    if (!empty($ret['code']) && $ret['code'] == 10000) {
+                            foreach ($ret['data'] as $item) {
                                 if (!empty($item[$v['plat_type']])) {
                                     $v['user_money'] = $item[$v['plat_type']];
                                 }
                             }
-                        }
 
                     }
                 }

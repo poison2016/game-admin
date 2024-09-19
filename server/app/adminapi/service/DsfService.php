@@ -5,7 +5,7 @@ namespace app\adminapi\service;
 class DsfService
 {
 
-    protected $api = 'https://www.chingold.org/api/guest/postGameApi';
+    protected $api = 'https://www.yunbo.la/api/guest/postGameApi';
 
 
 
@@ -39,7 +39,16 @@ class DsfService
             'url'=>$url,
             'method'=>json_encode($data)
         ];
-        return self::sendPostRequest($this->api,$sendData);
+        $res =  self::sendPostRequest($this->api,$sendData);
+        if($res){
+
+            if($res['code'] == 200){
+                $arrs = json_decode($res['data'],true);
+                return $arrs;
+            }
+        }
+        return [];
+
     }
 
     /**

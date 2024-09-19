@@ -47,11 +47,11 @@
                     <el-table-column label="性别" prop="sex_str" show-overflow-tooltip />
                     <el-table-column label="是否禁用" prop="is_disable_str" show-overflow-tooltip />
                     <el-table-column label="最后登录IP" prop="login_ip" show-overflow-tooltip />
-                    <el-table-column label="最后登录时间" prop="login_time">
+                <!--    <el-table-column label="最后登录时间" prop="login_time">
     <template #default="{ row }">
       <span>{{ row.login_time ? timeFormat(row.login_time, 'yyyy-mm-dd hh:MM:ss') : '' }}</span>
     </template>
-</el-table-column>
+</el-table-column> -->
                     <el-table-column label="用户余额" prop="user_money" show-overflow-tooltip />
                     <el-table-column label="累计充值" prop="total_recharge_amount" show-overflow-tooltip />
                     <el-table-column label="创建时间" prop="create_time">

@@ -19,7 +19,7 @@
 					<el-col :span="15">
 						<el-button type="danger"@click="getCustomerList">刷新余额</el-button>
 						<el-button type="danger" @click="getClassList(1)" >一键刷新</el-button>
-						<!-- <el-button type="danger">一键转出</el-button> -->
+						<el-button type="danger"@click="setUserGameMoneyData()">一键转出</el-button>
 					</el-col>
 					<el-col :span="6">
 						<el-form-item label="转账类型" prop="user_money">
@@ -49,9 +49,9 @@
 							   >
 							     <el-option
 							       v-for="item in class_list"
-							       :key="item.id"
+							       :key="item.plat_type"
 							       :label="item.game_title"
-							       :value="item.id"
+							       :value="item.plat_type"
 							     />
 							   </el-select>
 						</el-form-item>
@@ -160,11 +160,12 @@
 <script lang="ts" setup name="userEdit">
 import type { FormInstance } from 'element-plus'
 import Popup from '@/components/popup/index.vue'
-import { apiUserAdd, apiUserEdit, apiUserDetail, getUserGame, setUserGame } from '@/api/users'
+import { apiUserAdd, apiUserEdit, apiUserDetail, getUserGame, setUserGame, setUserGameMoney } from '@/api/users'
 import { timeFormat } from '@/utils/util'
 import type { PropType } from 'vue'
 import { apiUserDetailAll } from '@/api/users'
 import { apiYbPlatTypeLists } from '@/api/yb_plat_type'
+import { ElMessage } from 'element-plus'
 defineProps({
     dictData: {
         type: Object as PropType<Record<string, any[]>>,
@@ -320,8 +321,27 @@ async function setUserGameData() {
 	   type:formData.zzlx
 	   
     })
+	 ElMessage({
+	    message: '转出成功',
+	    type: 'success',
+	  })
 	console.log(res)
    // customerList.value = res
+}
+
+async function setUserGameMoneyData(){
+	const res = await setUserGameMoney({
+	   user_name:formData.account,
+	   user_id:formData.id,
+	   plat_type:formData.zl_pt,
+	   money:formData.zl_money,
+	   type:formData.zzlx
+	   
+	})
+	ElMessage({
+	   message: '一键转出成功',
+	   type: 'success',
+	 })
 }
 
 

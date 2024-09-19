@@ -21,6 +21,8 @@ use app\adminapi\lists\UserLists;
 use app\adminapi\logic\UserLogic;
 use app\adminapi\service\DsfService;
 use app\adminapi\validate\UserValidate;
+use app\common\model\UserAccountLogModel;
+use app\common\model\UserName;
 use app\common\model\YbPlatType;
 use think\facade\Db;
 
@@ -99,8 +101,6 @@ class UserController extends BaseAdminController
             'orderId'=>$this->generateRandomString(),
             'user_id'=>input('user_id'),
         ];
-        $inset['create_time'] = time();
-        Db::name('user_game_money_log')->insert($inset);
         $ret = (new DsfService())->sendUrl('/api/server/transfer',$data);
         if(!$ret){
             return $this->fail('操作失败');
@@ -108,7 +108,68 @@ class UserController extends BaseAdminController
         if($ret['code'] != 10000){
             return $this->fail($ret['msg']);
         }
+
+        $inset['create_time'] = time();
+        Db::name('user_game_money_log')->insert($inset);
         return $this->success('操作成功');
+
+    }
+
+    function setUserGameMoney(){
+        $data = [
+            'playerId'=>input('user_name'),
+            'currency'=>'CNY',
+        ];
+
+        $ret = (new DsfService())->sendUrl('/api/server/transferAll',$data);
+        if(!$ret){
+            return $this->fail('操作失败');
+        }
+        if($ret['code'] != 10000){
+            return $this->fail($ret['msg']);
+        }
+        $sumMoney = 0;
+        foreach ($ret['data'] as $k=> $v){
+            if($k == 'balanceAll'){
+                $sumMoney = $ret['data'][$k];
+                continue;
+            }
+            if($v){
+                $insetData[] = [
+                    'playerId'=>input('user_name'),
+                    'platType'=>$k,
+                    'currency'=>'CNY',
+                    'type'=>2,
+                    'amount'=>$v,
+                    'orderId'=>$this->generateRandomString(),
+                    'user_id'=>input('user_id'),
+                    'create_time'=>time()
+                ];
+            }
+
+        }
+        if($sumMoney){
+            $userMoney = UserName::getUserMoney(input('user_id'));
+            Db::name('user_game_money_log')->insert($insetData);
+            //写入用户表
+            $ret = UserName::setIncMoney(input('user_id'),$sumMoney);
+            //写入用户记录表
+            UserAccountLogModel::insetLog([
+                'sn'=>date('YmdHis',time()).rand(1000,9999),
+                'user_id'=>input('user_id'),
+                'action'=>1,
+                'change_amount'=>$sumMoney,
+                'left_amount'=>$sumMoney + $userMoney,
+                'source_sn'=>'',
+                'change_object'=>1,
+                'change_type'=>1,
+                'remark'=>'平台一键回收 增加金额',
+                'create_time'=>time(),
+                'update_time'=>time()
+            ]);
+        }
+
+        return $this->success('一键转出完成');
 
     }
 
