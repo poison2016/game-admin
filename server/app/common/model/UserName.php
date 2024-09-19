@@ -33,6 +33,10 @@ class UserName extends BaseModel
        return self::where('id',$userId)->findOrEmpty()->toArray();
     }
 
+    public static function getUserKey($userId,$key){
+        return self::where('id',$userId)->value($key);
+    }
+
     /**获取用户余额
      * @param $userId
      * @return mixed

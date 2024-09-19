@@ -1,0 +1,1 @@
+import{r as s}from"./index.f25b9900.js";function r(t){return s.get({url:"/yy_qkfs/lists",params:t})}function i(t){return s.post({url:"/yy_qkfs/add",params:t})}function f(t){return s.post({url:"/yy_qkfs/edit",params:t})}function u(t){return s.post({url:"/yy_qkfs/delete",params:t})}function a(t){return s.get({url:"/yy_qkfs/detail",params:t})}export{a,f as b,i as c,u as d,r as e};
