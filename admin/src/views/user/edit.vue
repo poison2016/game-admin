@@ -66,7 +66,7 @@
 						<el-button type="success" @click="setUserGameData()">额度转换</el-button>
 					</el-col>
 				</el-row>
-				<el-row>
+				<el-row v-if="formData.is_show == 3">
 					<el-col :span="22" :offset="1">
 						<el-row :gutter="5">
 							<el-col :span="3" style="border: 1px solid #999;border-radius: 5px;margin-top: 30px; margin-right: 10px;"  v-for="item in class_list" :key="item.id">
