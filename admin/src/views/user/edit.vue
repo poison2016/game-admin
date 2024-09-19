@@ -19,7 +19,7 @@
 					<el-col :span="15">
 						<el-button type="danger"@click="getCustomerList">刷新余额</el-button>
 						<el-button type="danger" @click="getClassList(1)" >一键刷新</el-button>
-						<el-button type="danger">一键转出</el-button>
+						<!-- <el-button type="danger">一键转出</el-button> -->
 					</el-col>
 					<el-col :span="6">
 						<el-form-item label="转账类型" prop="user_money">
